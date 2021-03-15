@@ -7,7 +7,7 @@ import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 })
 export class GifsService {
 
-  private apiKey: string = 'sWp5BXp5KLIcquaqlV9qz31IBwc2Q3om';
+  private apiKey: string = '';
   private urlBase: string = 'https://api.giphy.com/v1/gifs';
 
   private _historial: string[] = [];
@@ -49,7 +49,7 @@ export class GifsService {
       });
 
     /* Fetch Javascript (peticiones Http -> Menos funcionalidades que Angular (rxjs))
-    fetch('https://api.giphy.com/v1/gifs/search?api_key=sWp5BXp5KLIcquaqlV9qz31IBwc2Q3om&q=meme')
+    fetch('https://api.giphy.com/v1/gifs/search?api_key=&q=meme')
       .then( resp => {
         resp.json().then( datos => {console.log(datos);
         })
