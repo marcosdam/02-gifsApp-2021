@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 
@@ -8,9 +8,9 @@ import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 export class GifsService {
 
   private apiKey: string = 'sWp5BXp5KLIcquaqlV9qz31IBwc2Q3om';
+  private urlBase: string = 'https://api.giphy.com/v1/gifs';
 
   private _historial: string[] = [];
-
   public resultados: Gif[] = [];
 
   get historial() {
@@ -30,10 +30,17 @@ export class GifsService {
     if ( !this._historial.includes( query ) ){
       this._historial.unshift( query );
       this._historial = this._historial.splice(0,10);
+
+      localStorage.setItem( 'historial', JSON.stringify( this._historial ) );
     }
 
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit', '10')
+      .set('q', query);
+
     // Peticiones Http Angular (retornan Observables -> puedo concatenar, disparar otra petición simultáneamente, etc)
-    this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=${ this.apiKey }&q=${ query }&limit=10`)
+    this.http.get<SearchGifsResponse>(`${this.urlBase}/search`, { params })
       .subscribe( (resp) => {
         console.log( resp.data );
         this.resultados = resp.data;
